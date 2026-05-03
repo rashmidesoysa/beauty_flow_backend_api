@@ -11,14 +11,17 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/hello', function () {
-    return response()->json(['message' => 'Hello, World!']);
+Route::prefix('admin')->group(function () {
+    // Public routes
+    Route::post('/register', [AdminAuthController::class, 'register']);
+    Route::post('/login', [AdminAuthController::class, 'login']);
+    Route::post('/check-auth', [AdminAuthController::class, 'checkAuth']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AdminAuthController::class, 'logout']);
+        Route::get('/profile', [AdminAuthController::class, 'profile']);
+    });
 });
-
-//Admin auth routes
-Route::post('/admin/register', [AdminAuthController::class, 'register']);
-
-Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
 //Supplier routes
 Route::post('/supplier/create', [SupplierController::class, 'create']);
@@ -36,9 +39,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/customer/profile', [CustomerAuthController::class, 'profile']);
 
     Route::post('/customer/logout', [CustomerAuthController::class, 'logout']);
-
-    Route::get('/admin/profile', [AdminAuthController::class, 'profile']);
-
-    Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
 
 });
