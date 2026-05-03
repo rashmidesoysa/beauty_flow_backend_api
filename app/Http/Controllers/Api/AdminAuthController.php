@@ -31,51 +31,74 @@ class AdminAuthController extends Controller
             DB::commit();
 
             return response()->json([
+                'success' => true,
                 'message' => 'Admin Successfully Registered',
                 'token' => $token,
                 'user' => $user
             ]);
-        } catch (\Throwable $th) {
+        } catch (\Throwable $e) {
             DB::rollBack();
 
             return response()->json([
                 'success' => false,
                 'message' => 'Registration Failed',
-                'error' => $th->getMessage()
+                'error' =>  $e->getMessage()
             ], 500);
         }
     }
 
     public function login(Request $request)
     {
-        $user = User::where('email', $request->email)
-            ->where('user_type', 'A')
-            ->first();
+        try {
+            $user = User::where('email', $request->email)
+                ->where('user_type', 'A')
+                ->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid credentials'
+                ], 401);
+            }
+
+            $token = $user->createToken('admin-token')->plainTextToken;
+
             return response()->json([
-                'message' => 'Invalid Credentials'
-            ], 401);
+                'success' => true,
+                'message' => 'Login successful',
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'user_type' => $user->user_type,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Login failed',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $token = $user->createToken('admin-login')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login Success',
-            'token' => $token
-        ]);
     }
+
      public function profile(Request $request)
     {
-        return $request->user();
+        return response()->json([
+            'success' => true,
+            'user' => $request->user()
+        ]);
     }
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Logout Success'
+            'success' => true,
+            'message' => 'Logged out successfully'
         ]);
     }
 }
