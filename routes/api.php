@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AdminAuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SupplierController;
 
@@ -22,6 +23,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/check-auth', [AdminAuthController::class, 'checkAuth']);
 
     Route::middleware('auth:sanctum')->group(function () {
+
         Route::post('/logout', [AdminAuthController::class, 'logout']);
         Route::get('/profile', [AdminAuthController::class, 'profile']);
 
@@ -64,8 +66,11 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-
-
+Route::prefix('shop')->group(function () {
+    Route::get('/items', [ShopController::class, 'getItems']);
+    Route::get('/categories', [ShopController::class, 'getCategories']);
+    Route::get('/item/{id}', [ShopController::class, 'getItemDetails']);
+});
 
 //customer auth routes
 Route::post('/customer/register', [CustomerAuthController::class, 'register']);
