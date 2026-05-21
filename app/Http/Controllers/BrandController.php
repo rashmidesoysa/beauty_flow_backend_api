@@ -90,6 +90,8 @@ class BrandController extends Controller
             if ($request->hasFile('image')) {
                 // create folder automatically if not exists
                 $imagePath = $request->file('image')->store('BrandImages', 'public');
+            } else {
+                $imagePath = null;
             }
 
             $brand->update([
