@@ -10,7 +10,8 @@ class Supplier extends Model
 {
     use SoftDeletes, HasFactory;
     /** @use HasFactory<\Database\Factories\SupplierFactory> */
-   protected $table = '_tblm__customer';
+    protected $table = 'supplier';
+
 
     protected $fillable = [
         'sup_code',
@@ -20,17 +21,18 @@ class Supplier extends Model
         'phone',
         'address',
         'city',
-        'tax_code',
-        'current_balance',
-        'is_active',
+        'Taxcode',
+        'currentBalance',
         'remarks',
+        'is_active',
         'created_by',
         'updated_by',
         'deleted_by'
-
     ];
+
     protected $casts = [
         'is_active' => 'boolean',
+        'currentBalance' => 'decimal:2',
     ];
 
     public function createdBy()

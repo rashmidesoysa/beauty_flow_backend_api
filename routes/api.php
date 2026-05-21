@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CustomerAuthController;
 use App\Http\Controllers\Api\AdminAuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SupplierController;
 
@@ -25,9 +26,12 @@ Route::prefix('admin')->group(function () {
         Route::get('/profile', [AdminAuthController::class, 'profile']);
 
         //Supplier routes
+        Route::get('/suppliers', [SupplierController::class, 'index']);
         Route::post('/supplier/create', [SupplierController::class, 'create']);
-
-        Route::put('/supplier/update', [SupplierController::class, 'update']);
+        Route::put('/supplier/update/{id}', [SupplierController::class, 'update']);
+        Route::delete('/supplier/delete/{id}', [SupplierController::class, 'destroy']);
+        Route::get('/supplier/{id}', [SupplierController::class, 'show']);
+        Route::post('/supplier/update-status/{id}', [SupplierController::class, 'updateSupplierStatus']);
 
         //Category routes
         Route::get('/categories', [CategoryController::class, 'index']);
@@ -49,6 +53,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/brand/{id}', [BrandController::class, 'show']);
         Route::post('/brand/update/{id}', [BrandController::class, 'update']);
         Route::delete('/brand/delete/{id}', [BrandController::class, 'destroy']);
+
+        //item routes
+        Route::get('/items', [ItemController::class, 'index']);
+        Route::get('/item/{id}', [ItemController::class, 'show']);
+        Route::post('/item/create', [ItemController::class, 'create']);
+        Route::post('/item/update/{id}', [ItemController::class, 'update']);
+        Route::delete('/item/delete/{id}', [ItemController::class, 'destroy']);
+        Route::post('/item/update-status/{id}', [ItemController::class, 'updateStatus']);
     });
 });
 

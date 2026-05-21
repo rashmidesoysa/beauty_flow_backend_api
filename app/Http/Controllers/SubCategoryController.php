@@ -89,6 +89,8 @@ class SubCategoryController extends Controller
             if ($request->hasFile('image')) {
                 // create folder automatically if not exists
                 $imagePath = $request->file('image')->store('SubCategoryImages', 'public');
+            } else {
+                $imagePath = null;
             }
 
             $subCategory->update([

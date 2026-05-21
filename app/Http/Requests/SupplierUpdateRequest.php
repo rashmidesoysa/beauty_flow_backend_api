@@ -25,16 +25,14 @@ class SupplierUpdateRequest extends FormRequest
         return [
             'fname' => 'required|string|max:100',
             'lname' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|unique:_tblm__customer,phone',
-            'password' => 'required|min:6|confirmed',
+            'email' => 'required|email|unique:supplier,email,' . $this->id,
+            'phone' => 'required|unique:supplier,phone,' . $this->id,
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
-            'taxcode' => 'nullable|string|max:20',
+            'Taxcode' => 'nullable|string|max:20',
             'curentBalance' => 'nullable|numeric',
             'remarks' => 'nullable|string|max:255',
         ];
-
     }
     public function messages(): array
     {
@@ -51,10 +49,8 @@ class SupplierUpdateRequest extends FormRequest
             'password.confirmed' => 'Password confirmation does not match.',
             'address.string' => 'Address must be a string.',
             'city.string' => 'City must be a string.',
-            'postal_code.string' => 'Postal code must be a string.',
-            'remarks.string' => 'Remarks must be a string.',
-            'taxcode.string' => 'Tax code must be a string.',
+            'Taxcode.string' => 'Tax code must be a string.',
             'curentBalance.numeric' => 'Current balance must be a number.',
         ];
-}
+    }
 }

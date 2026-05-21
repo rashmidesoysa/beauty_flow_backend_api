@@ -25,8 +25,8 @@ class SupplierCreateRequest extends FormRequest
         return [
             'fname' => 'required|string|max:100',
             'lname' => 'required|string|max:100',
-            'email' => 'required|email|unique:suppliers,email',
-            'phone' => 'required|unique:suppliers,phone',
+            'email' => 'required|email|unique:supplier,email',
+            'phone' => 'required|unique:supplier,phone',
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
             'taxcode' => 'nullable|string|max:20',
@@ -52,5 +52,4 @@ class SupplierCreateRequest extends FormRequest
             'curentBalance.numeric' => 'Current balance must be a number.',
         ];
     }
-
 }
