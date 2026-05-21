@@ -2,35 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Supplier extends Model
+class SubCategory extends Model
 {
+    //
     use SoftDeletes, HasFactory;
-    /** @use HasFactory<\Database\Factories\SupplierFactory> */
-   protected $table = '_tblm__customer';
+    protected $table = 'sub_categories';
 
     protected $fillable = [
-        'sup_code',
-        'fname',
-        'lname',
-        'email',
-        'phone',
-        'address',
-        'city',
-        'tax_code',
-        'current_balance',
-        'is_active',
-        'remarks',
+        'category_id',
+        'name',
+        'description',
+        'image_url',
         'created_by',
         'updated_by',
         'deleted_by'
-
-    ];
-    protected $casts = [
-        'is_active' => 'boolean',
     ];
 
     public function createdBy()
@@ -46,5 +35,10 @@ class Supplier extends Model
     public function deletedBy()
     {
         return $this->belongsTo(User::class, 'deleted_by');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

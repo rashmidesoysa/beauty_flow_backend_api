@@ -49,9 +49,8 @@ class CustomerAuthController extends Controller
                 'token' => $token,
                 'user' => $user
             ]);
-
         } catch (\Throwable $th) {
-             DB::rollBack();
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,
