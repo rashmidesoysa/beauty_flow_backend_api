@@ -35,7 +35,6 @@ class CustomerRegisterRequest extends FormRequest
             'postal_code' => 'nullable|string|max:20',
             'remarks' => 'nullable|string|max:255',
         ];
-
     }
 
     public function messages(): array
@@ -58,7 +57,7 @@ class CustomerRegisterRequest extends FormRequest
         ];
     }
 
-     protected function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(
             response()->json([
